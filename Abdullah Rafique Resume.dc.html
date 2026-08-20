@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:#e6e4da;color:#1e2716;font-family:"IBM Plex Mono",ui-monospace,monospace;text-wrap:pretty}
+*{box-sizing:border-box}
+a{color:#9e3b2a;text-decoration:none;border-bottom:1px solid rgba(158,59,42,.35);transition:color .18s cubic-bezier(.2,.8,.25,1),border-color .18s cubic-bezier(.2,.8,.25,1)}
+a:hover{color:#1e2716;border-color:#1e2716}
+button{font-family:inherit;touch-action:manipulation}
+input,textarea{font-family:"IBM Plex Mono",ui-monospace,monospace}
+@keyframes lcdBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes step{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ledPulse{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes coinFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes clearIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#e6e4da;background-image:radial-gradient(rgba(30,39,22,.07) 1px,transparent 1px);background-size:4px 4px">
+
+<header style="position:sticky;top:0;z-index:20;background:#d5d3ca;border-bottom:2px solid #7d7b73;box-shadow:0 2px 0 rgba(30,39,22,.12)">
+<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:10px clamp(12px,3.6vw,24px)">
+<span style="font-family:'Press Start 2P',monospace;font-size:clamp(9px,2.9vw,12px);line-height:1.3;color:#1e2716">ABDULLAH&nbsp;RAFIQUE</span>
+<nav style="display:flex;flex-wrap:wrap;gap:6px clamp(10px,3vw,20px);align-items:center;min-width:0">
+<a href="#experience" style="font-size:clamp(10px,2.7vw,12px);white-space:nowrap;border-bottom:2px solid {{ nav.experience.line }};color:{{ nav.experience.color }}">EXPERIENCE</a>
+<a href="#skills" style="font-size:clamp(10px,2.7vw,12px);white-space:nowrap;border-bottom:2px solid {{ nav.skills.line }};color:{{ nav.skills.color }}">SKILLS</a>
+<a href="#projects" style="font-size:clamp(10px,2.7vw,12px);white-space:nowrap;border-bottom:2px solid {{ nav.projects.line }};color:{{ nav.projects.color }}">PROJECTS</a>
+<a href="#contact" style="font-size:clamp(10px,2.7vw,12px);white-space:nowrap;border-bottom:2px solid {{ nav.contact.line }};color:{{ nav.contact.color }}">CONTACT</a>
+</nav>
+</div>
+<div style="height:3px;background:rgba(30,39,22,.1)"><div style="height:3px;background:#4f5d3c;width:{{ scrollPct }};transition:width .12s linear"></div></div>
+</header>
+
+<main style="max-width:1120px;margin:0 auto;padding:clamp(28px,6vw,48px) clamp(14px,4vw,24px) 72px;display:flex;flex-direction:column;gap:clamp(32px,6vw,48px)">
+
+<section style="display:flex;flex-wrap:wrap;gap:clamp(28px,5vw,44px);align-items:flex-start">
+
+<div style="flex:1 1 340px;min-width:min(300px,100%);display:flex;flex-direction:column;gap:24px;animation:riseIn .5s cubic-bezier(.2,.8,.25,1) both">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="width:8px;height:8px;border-radius:999px;background:#9e3b2a;animation:ledPulse 2.4s cubic-bezier(.4,0,.6,1) infinite"></span>
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;color:#4f5d3c">PLAYER 01 &nbsp;/&nbsp; MUNICH, DE</span>
+</div>
+<h1 style="margin:0;font-family:'Press Start 2P',monospace;font-size:40px;line-height:1.25;letter-spacing:-.5px;color:#1e2716">ABDULLAH<br>RAFIQUE</h1>
+<p style="margin:0;font-family:'Press Start 2P',monospace;font-size:14px;line-height:1.6;color:#4f5d3c">RESUME</p>
+<p style="margin:0;font-size:14px;line-height:1.65;max-width:44ch;color:#39452b;min-height:4.95em">{{ intro }}<span style="animation:lcdBlink 1s steps(1) infinite">_</span></p>
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+<button type="button" onClick="{{ onDownload }}" style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:#1e2716;color:#c2cf9b;border:none;border-radius:8px;box-shadow:0 3px 0 #7d7b73;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;cursor:pointer;transition:transform .18s cubic-bezier(.2,.8,.25,1),box-shadow .18s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-2px);box-shadow:0 5px 0 #7d7b73">
+<span>{{ dlLabel }}</span>
+<span style="display:flex;gap:2px;align-items:center">
+<sc-for list="{{ dlCells }}" as="cell" hint-placeholder-count="6"><span style="width:5px;height:10px;border-radius:2px;background:{{ cell.fill }}"></span></sc-for>
+</span>
+</button>
+<a href="https://www.linkedin.com/in/abdullahrafique07/" target="_blank" rel="noopener" style="padding:14px 18px;border:2px solid #7d7b73;border-radius:8px;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;color:#1e2716;background:#d5d3ca;transition:transform .18s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-2px);color:#1e2716">LINKEDIN</a>
+</div>
+<div style="border-top:2px solid #8f8d85;padding-top:16px;display:flex;flex-direction:column;gap:10px">
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.4;color:#4f5d3c">MY CV AS 5 LEVELS · {{ clearedCount }} CLEARED</span>
+<div style="display:flex;flex-direction:column;gap:6px">
+<sc-for list="{{ levelList }}" as="lv" hint-placeholder-count="5">
+<button type="button" onClick="{{ lv.pick }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;min-height:44px;border:2px solid {{ lv.border }};border-radius:2px;background:{{ lv.bg }};cursor:{{ lv.cursor }};text-align:left;transition:transform .18s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-2px)">
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.4;color:{{ lv.fg }}">{{ lv.name }}</span>
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.4;color:{{ lv.statusFg }}">{{ lv.status }}</span>
+</button>
+</sc-for>
+</div>
+</div>
+</div>
+
+<div style="flex:0 1 520px;min-width:min(320px,100%);animation:riseIn .5s cubic-bezier(.2,.8,.25,1) .12s both">
+<div style="background:linear-gradient(#dedcd3,#c9c7be);border:2px solid #7d7b73;border-radius:8px;padding:20px 20px 24px;box-shadow:0 4px 0 rgba(30,39,22,.18)">
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;color:#7d7b73">CAREER&nbsp;RUN</span>
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;color:#7d7b73">{{ levelCounter }}</span>
+</div>
+
+<div style="position:relative;background:#c2cf9b;border:3px solid #2b2b28;border-radius:2px;padding:12px;height:300px;overflow:hidden">
+<div style="position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(30,39,22,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(30,39,22,.13) 1px,transparent 1px);background-size:3px 3px;opacity:{{ matrixOpacity }};z-index:6"></div>
+
+<div style="display:flex;justify-content:space-between;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;color:#1e2716">
+<span>{{ levelName }}</span>
+<span>{{ scoreLine }}</span>
+</div>
+
+<div style="margin-top:6px;height:5px;background:rgba(30,39,22,.14);border-radius:2px;overflow:hidden">
+<div data-game="progress" style="height:5px;width:0%;background:#4f5d3c"></div>
+</div>
+
+<div data-game="view" onPointerDown="{{ pressJump }}" style="position:relative;height:236px;margin-top:8px;overflow:hidden;cursor:pointer">
+<div data-game="sky" style="position:absolute;left:0;top:0;width:4000px;height:100%;background-image:repeating-linear-gradient(90deg,rgba(30,39,22,.09) 0 2px,transparent 2px 52px);will-change:transform"></div>
+<div data-game="world" style="position:absolute;left:0;top:0;bottom:0;width:{{ worldW }};will-change:transform">
+<sc-for list="{{ ground }}" as="s" hint-placeholder-count="3">
+<div style="position:absolute;left:{{ s.x }};width:{{ s.w }};bottom:26px;height:3px;background:repeating-linear-gradient(90deg,#4f5d3c 0 5px,transparent 5px 9px)"></div>
+</sc-for>
+<sc-for list="{{ pits }}" as="p" hint-placeholder-count="3">
+<div style="position:absolute;left:{{ p.x }};width:{{ p.w }};bottom:0;height:26px;background:repeating-linear-gradient(135deg,rgba(30,39,22,.18) 0 4px,transparent 4px 8px)"></div>
+</sc-for>
+<div style="position:absolute;left:{{ flagX }};bottom:29px;width:4px;height:84px;background:#1e2716"></div>
+<div style="position:absolute;left:{{ flagLabelX }};bottom:92px;padding:3px 5px;background:#1e2716;color:#c2cf9b;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1">END</div>
+<sc-for list="{{ coins }}" as="c" hint-placeholder-count="10">
+<div style="position:absolute;left:{{ c.x }};bottom:{{ c.y }};width:12px;height:12px;border-radius:2px;background:{{ c.bg }};border:2px solid {{ c.border }};animation:coinFloat 1.6s ease-in-out infinite;animation-delay:{{ c.delay }}"></div>
+</sc-for>
+<div data-game="sprite" style="position:absolute;left:0;bottom:29px;width:14px;will-change:transform">
+<div data-game="legs" style="display:flex;flex-direction:column;align-items:center;gap:1px;animation:step .28s steps(2,end) infinite;animation-play-state:paused">
+<span style="width:9px;height:6px;background:#1e2716;border-radius:2px"></span>
+<span style="width:14px;height:10px;background:#1e2716;border-radius:2px"></span>
+<span style="width:11px;height:3px;background:#4f5d3c;border-radius:2px"></span>
+</div>
+</div>
+</div>
+
+<sc-if value="{{ overlay.show }}" hint-placeholder-val="{{ true }}">
+<div onPointerDown="{{ stopEvt }}" style="position:absolute;inset:0;z-index:5;background:rgba(194,207,155,.96);border:2px solid #4f5d3c;border-radius:2px;padding:12px;display:flex;flex-direction:column;gap:7px;animation:clearIn .26s cubic-bezier(.2,.8,.25,1) both;overflow:hidden">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+<span style="font-family:'Press Start 2P',monospace;font-size:12px;line-height:1.3;color:#1e2716">{{ overlay.head }}</span>
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;color:#4f5d3c">{{ overlay.sub }}</span>
+</div>
+<p style="margin:0;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.5;color:#1e2716">{{ overlay.title }}</p>
+<p style="margin:0;font-size:12px;line-height:1.45;color:#4f5d3c">{{ overlay.org }}</p>
+<ul style="margin:0;padding-left:16px;display:flex;flex-direction:column;gap:5px;font-size:12px;line-height:1.45;color:#39452b">
+<sc-for list="{{ overlay.bullets }}" as="b" hint-placeholder-count="3"><li>{{ b.t }}</li></sc-for>
+</ul>
+<div style="margin-top:auto;display:flex;flex-wrap:wrap;gap:8px">
+<button type="button" onClick="{{ overlay.primaryGo }}" style="padding:10px 12px;border:none;border-radius:2px;background:#1e2716;color:#c2cf9b;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;cursor:pointer">{{ overlay.primaryLabel }}</button>
+<sc-if value="{{ overlay.hasSecondary }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ overlay.secondaryGo }}" style="padding:10px 12px;border:2px solid #4f5d3c;border-radius:2px;background:none;color:#1e2716;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;cursor:pointer">{{ overlay.secondaryLabel }}</button>
+</sc-if>
+</div>
+</div>
+</sc-if>
+</div>
+</div>
+
+<div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:20px;gap:20px;flex-wrap:wrap">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;color:#7d7b73">LEVEL SELECT</span>
+<div style="display:flex;gap:6px">
+<sc-for list="{{ levelChips }}" as="ch" hint-placeholder-count="5">
+<button type="button" onClick="{{ ch.pick }}" aria-label="{{ ch.aria }}" style="width:38px;height:38px;border:2px solid {{ ch.border }};border-radius:2px;background:{{ ch.bg }};color:{{ ch.fg }};font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;cursor:{{ ch.cursor }}">{{ ch.n }}</button>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end">
+<div style="display:flex;gap:14px;align-items:center">
+<button type="button" onClick="{{ onRetry }}" aria-label="Restart level" style="width:44px;height:44px;border-radius:999px;background:#9e3b2a;border:none;box-shadow:0 3px 0 #6f2a1e;color:#f0efe8;font-family:'Press Start 2P',monospace;font-size:10px;cursor:pointer;transition:transform .12s cubic-bezier(.2,.8,.25,1)" style-active="transform:translateY(3px);box-shadow:0 0 0 #6f2a1e">B</button>
+<button type="button" onPointerDown="{{ pressJump }}" aria-label="Jump" style="width:44px;height:44px;border-radius:999px;background:#9e3b2a;border:none;box-shadow:0 3px 0 #6f2a1e;color:#f0efe8;font-family:'Press Start 2P',monospace;font-size:10px;cursor:pointer;transition:transform .12s cubic-bezier(.2,.8,.25,1)" style-active="transform:translateY(3px);box-shadow:0 0 0 #6f2a1e">A</button>
+</div>
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.6;color:#7d7b73;text-align:right">HE RUNS ON HIS OWN<br>A · SPACE · TAP SCREEN = JUMP<br>B RESTARTS THE LEVEL</span>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<section id="experience" style="scroll-margin-top:84px;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;border-bottom:2px solid #7d7b73;padding-bottom:10px">
+<h2 style="margin:0;font-family:'Press Start 2P',monospace;font-size:18px;line-height:1.3;color:#1e2716">EXPERIENCE</h2>
+<span style="font-size:12px;color:#4f5d3c">3 roles · Munich</span>
+<button type="button" onClick="{{ onToggleAll }}" style="margin-left:auto;padding:8px 12px;border:2px solid #7d7b73;border-radius:2px;background:#d5d3ca;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;color:#1e2716;cursor:pointer;transition:transform .18s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-2px)">{{ toggleAllLabel }}</button>
+</div>
+
+<div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:12px 14px;border:2px solid {{ filterBox.border }};border-radius:2px;background:{{ filterBox.bg }}">
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.4;color:{{ filterBox.fg }}">{{ filterBox.text }}</span>
+<sc-if value="{{ filterActive }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ onClearFilter }}" style="padding:6px 10px;border:none;border-radius:2px;background:#1e2716;color:#c2cf9b;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;cursor:pointer">CLEAR</button>
+</sc-if>
+</div>
+
+<article style="background:#d5d3ca;border:2px solid #7d7b73;border-radius:8px;padding:24px;box-shadow:0 3px 0 rgba(30,39,22,.14);opacity:{{ roleA.op }};transition:opacity .25s cubic-bezier(.2,.8,.25,1),transform .2s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-3px)">
+<button type="button" onClick="{{ roleA.toggle }}" style="width:100%;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:baseline;margin:0 0 8px;padding:0;background:none;border:none;cursor:pointer;text-align:left">
+<h3 style="margin:0;font-family:'Press Start 2P',monospace;font-size:14px;line-height:1.5;color:#1e2716">Digital Transformation · Reporting &amp; Analysis</h3>
+<span style="display:flex;align-items:center;gap:10px">
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;padding:5px 8px;border-radius:2px;background:#1e2716;color:#c2cf9b">CURRENT</span>
+<span style="font-size:14px;color:#4f5d3c">{{ roleA.caret }}</span>
+</span>
+</button>
+<p style="margin:0 0 16px;font-size:14px;line-height:1.65;color:#4f5d3c">Allianz SE Group Compliance, Munich · 11/2025 – present</p>
+<sc-if value="{{ roleA.open }}" hint-placeholder-val="{{ true }}">
+<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.65;color:#39452b">
+<li>Automated data collection and cleaning with Python for MI reporting and an internal AI tool.</li>
+<li>Prepared training data sets for AI models.</li>
+<li>Led preparation and coordination of regulatory reports: Annual, Interim, SFCR, RSR.</li>
+<li>Built dashboards and analysis in Power BI, Excel and Python for strategic decisions.</li>
+<li>Ran quality assurance on data from 58+ operational entities.</li>
+<li>Developed KPIs and KRIs, and supported executive board presentations across entities.</li>
+<li>Provided PMO support for global initiatives: timeline tracking, logistics, coordination.</li>
+</ul>
+</sc-if>
+</article>
+
+<article style="background:#d5d3ca;border:2px solid #7d7b73;border-radius:8px;padding:24px;box-shadow:0 3px 0 rgba(30,39,22,.14);opacity:{{ roleB.op }};transition:opacity .25s cubic-bezier(.2,.8,.25,1),transform .2s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-3px)">
+<button type="button" onClick="{{ roleB.toggle }}" style="width:100%;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:baseline;margin:0 0 8px;padding:0;background:none;border:none;cursor:pointer;text-align:left">
+<h3 style="margin:0;font-family:'Press Start 2P',monospace;font-size:14px;line-height:1.5;color:#1e2716">Global Program Purchasing Trainee</h3>
+<span style="display:flex;align-items:center;gap:10px">
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;padding:5px 8px;border-radius:2px;background:#c2cf9b;color:#1e2716">CLEARED</span>
+<span style="font-size:14px;color:#4f5d3c">{{ roleB.caret }}</span>
+</span>
+</button>
+<p style="margin:0 0 16px;font-size:14px;line-height:1.65;color:#4f5d3c">Forvia, Munich · 02/2025 – 09/2025</p>
+<sc-if value="{{ roleB.open }}" hint-placeholder-val="{{ true }}">
+<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.65;color:#39452b">
+<li>Collected, validated and analysed data from regional purchasing teams to support sourcing strategy.</li>
+<li>Built and maintained Power BI dashboards giving real-time visibility into purchasing KPIs.</li>
+<li>Worked on Supplier Nomination Committee and Sourcing Strategy Review processes to finalise supplier selection.</li>
+<li>Revised Faurecia Core Procedures for Program Purchasing against updated business requirements.</li>
+<li>Coordinated with cross-functional international teams, including GPS, on daily operations.</li>
+</ul>
+</sc-if>
+</article>
+
+<article style="background:#d5d3ca;border:2px solid #7d7b73;border-radius:8px;padding:24px;box-shadow:0 3px 0 rgba(30,39,22,.14);opacity:{{ roleC.op }};transition:opacity .25s cubic-bezier(.2,.8,.25,1),transform .2s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-3px)">
+<button type="button" onClick="{{ roleC.toggle }}" style="width:100%;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:baseline;margin:0 0 8px;padding:0;background:none;border:none;cursor:pointer;text-align:left">
+<h3 style="margin:0;font-family:'Press Start 2P',monospace;font-size:14px;line-height:1.5;color:#1e2716">Project Management Intern</h3>
+<span style="display:flex;align-items:center;gap:10px">
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;padding:5px 8px;border-radius:2px;background:#c2cf9b;color:#1e2716">CLEARED</span>
+<span style="font-size:14px;color:#4f5d3c">{{ roleC.caret }}</span>
+</span>
+</button>
+<p style="margin:0 0 16px;font-size:14px;line-height:1.65;color:#4f5d3c">Allianz Germany (IDS), Munich · 08/2023 – 07/2024</p>
+<sc-if value="{{ roleC.open }}" hint-placeholder-val="{{ true }}">
+<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.65;color:#39452b">
+<li>Built advanced Excel models for financial analysis, budgeting and forecasting.</li>
+<li>Produced workshop presentations delivering insights to operational entities and board members.</li>
+<li>Ran KPI analysis and performance reporting to keep the project on track.</li>
+<li>Improved tracking with Jira, Confluence and MS Project in a multinational team.</li>
+<li>Used SAP for budgeting and annual forecast preparation, and SQL to extract and maintain data.</li>
+<li>Supported implementation of ESG due diligence regulations.</li>
+<li>Organised large corporate stakeholder meetings and workshops.</li>
+</ul>
+</sc-if>
+</article>
+</section>
+
+<section id="skills" style="scroll-margin-top:84px;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;border-bottom:2px solid #7d7b73;padding-bottom:10px">
+<h2 style="margin:0;font-family:'Press Start 2P',monospace;font-size:18px;line-height:1.3;color:#1e2716">LOADOUT</h2>
+<span style="font-size:12px;color:#4f5d3c">click a skill with a number to see the roles that used it</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:12px 14px;border:2px solid {{ filterBox.border }};border-radius:2px;background:{{ filterBox.bg }}">
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.4;color:{{ filterBox.fg }}">{{ filterBox.text }}</span>
+<sc-if value="{{ filterActive }}" hint-placeholder-val="{{ false }}">
+<span style="display:flex;gap:8px;margin-left:auto">
+<button type="button" onClick="{{ onJumpToRoles }}" style="padding:6px 10px;border:none;border-radius:2px;background:#1e2716;color:#c2cf9b;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;cursor:pointer">SEE ROLES</button>
+<button type="button" onClick="{{ onClearFilter }}" style="padding:6px 10px;border:2px solid #4f5d3c;border-radius:2px;background:none;color:#1e2716;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;cursor:pointer">CLEAR</button>
+</span>
+</sc-if>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:24px">
+
+<sc-for list="{{ skillGroups }}" as="g" hint-placeholder-count="3">
+<div style="flex:1 1 320px;background:#c2cf9b;border:2px solid #4f5d3c;border-radius:8px;padding:20px">
+<p style="margin:0 0 14px;font-family:'Press Start 2P',monospace;font-size:12px;line-height:1.3;color:#1e2716">{{ g.title }}</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ g.items }}" as="it" hint-placeholder-count="7">
+<button type="button" onClick="{{ it.click }}" style="display:flex;align-items:center;gap:6px;padding:6px 10px;border:2px solid {{ it.border }};border-radius:2px;background:{{ it.bg }};font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.3;color:{{ it.fg }};cursor:{{ it.cursor }};transition:transform .18s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-2px)">
+<span>{{ it.name }}</span>
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;color:{{ it.countFg }}">{{ it.count }}</span>
+</button>
+</sc-for>
+</div>
+</div>
+</sc-for>
+
+<div style="flex:1 1 300px;background:#d5d3ca;border:2px solid #7d7b73;border-radius:8px;padding:20px">
+<p style="margin:0 0 16px;font-family:'Press Start 2P',monospace;font-size:12px;line-height:1.3;color:#1e2716">LANGUAGES</p>
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;justify-content:space-between;font-size:12px;color:#4f5d3c"><span>Urdu</span><span>Native</span></div>
+<div style="display:flex;gap:3px"><span style="flex:1;height:10px;border-radius:2px;background:#4f5d3c"></span><span style="flex:1;height:10px;border-radius:2px;background:#4f5d3c"></span><span style="flex:1;height:10px;border-radius:2px;background:#4f5d3c"></span><span style="flex:1;height:10px;border-radius:2px;background:#4f5d3c"></span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;justify-content:space-between;font-size:12px;color:#4f5d3c"><span>English</span><span>Native</span></div>
+<div style="display:flex;gap:3px"><span style="flex:1;height:10px;border-radius:2px;background:#4f5d3c"></span><span style="flex:1;height:10px;border-radius:2px;background:#4f5d3c"></span><span style="flex:1;height:10px;border-radius:2px;background:#4f5d3c"></span><span style="flex:1;height:10px;border-radius:2px;background:#4f5d3c"></span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;justify-content:space-between;font-size:12px;color:#4f5d3c"><span>German</span><span>Basic</span></div>
+<div style="display:flex;gap:3px"><span style="flex:1;height:10px;border-radius:2px;background:#4f5d3c"></span><span style="flex:1;height:10px;border-radius:2px;background:rgba(30,39,22,.12)"></span><span style="flex:1;height:10px;border-radius:2px;background:rgba(30,39,22,.12)"></span><span style="flex:1;height:10px;border-radius:2px;background:rgba(30,39,22,.12)"></span></div>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<section id="projects" style="scroll-margin-top:84px;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;align-items:baseline;gap:14px;border-bottom:2px solid #7d7b73;padding-bottom:10px">
+<h2 style="margin:0;font-family:'Press Start 2P',monospace;font-size:18px;line-height:1.3;color:#1e2716">CARTRIDGES</h2>
+<span style="font-size:12px;color:#4f5d3c">projects</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:24px">
+<article style="flex:1 1 380px;background:#d5d3ca;border:2px solid #7d7b73;border-radius:8px;padding:24px;box-shadow:0 3px 0 rgba(30,39,22,.14);opacity:{{ roleP.op }};transition:opacity .25s cubic-bezier(.2,.8,.25,1),transform .2s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-3px)">
+<div style="display:flex;gap:4px;margin-bottom:16px">
+<span style="width:26px;height:8px;border-radius:2px;background:#4f5d3c"></span>
+<span style="width:26px;height:8px;border-radius:2px;background:#4f5d3c"></span>
+<span style="width:26px;height:8px;border-radius:2px;background:#8f8d85"></span>
+</div>
+<h3 style="margin:0 0 8px;font-family:'Press Start 2P',monospace;font-size:14px;line-height:1.5;color:#1e2716">Predictive Maintenance Model</h3>
+<p style="margin:0 0 14px;font-size:14px;line-height:1.65;color:#4f5d3c">Machine learning · Constructor University Bremen</p>
+<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.65;color:#39452b">
+<li>Model predicting asset failures: 25% higher prediction accuracy, 15% lower maintenance cost.</li>
+<li>Power BI dashboard with DAX measures to visualise predictions.</li>
+<li>NLP on maintenance logs to raise model accuracy.</li>
+</ul>
+</article>
+<article style="flex:1 1 300px;background:repeating-linear-gradient(135deg,#dedcd3 0 8px,#d2d0c7 8px 16px);border:2px dashed #8f8d85;border-radius:8px;padding:24px;display:flex;flex-direction:column;justify-content:center;gap:10px;min-height:200px">
+<p style="margin:0;font-family:'Press Start 2P',monospace;font-size:12px;line-height:1.5;color:#7d7b73">SLOT 02 EMPTY</p>
+<p style="margin:0;font-size:12px;line-height:1.6;color:#7d7b73">Reserved for the projects you are adding. Send me the write-up and it drops in here.</p>
+</article>
+</div>
+</section>
+
+<section style="display:flex;flex-wrap:wrap;gap:24px">
+<div style="flex:1 1 380px;background:#d5d3ca;border:2px solid #7d7b73;border-radius:8px;padding:24px">
+<h2 style="margin:0 0 16px;font-family:'Press Start 2P',monospace;font-size:14px;line-height:1.5;color:#1e2716">EDUCATION</h2>
+<p style="margin:0 0 4px;font-size:14px;line-height:1.65;color:#1e2716">BSc Industrial Engineering &amp; Management</p>
+<p style="margin:0 0 12px;font-size:14px;line-height:1.65;color:#4f5d3c">Constructor University, Bremen · 09/2021 – 06/2024</p>
+<p style="margin:0;font-size:12px;line-height:1.6;color:#39452b">Thesis: social media analytics as a lens on consumer perception of environmental sustainability regulation.</p>
+</div>
+<div style="flex:1 1 300px;background:repeating-linear-gradient(135deg,#dedcd3 0 8px,#d2d0c7 8px 16px);border:2px dashed #8f8d85;border-radius:8px;padding:24px">
+<h2 style="margin:0 0 12px;font-family:'Press Start 2P',monospace;font-size:14px;line-height:1.5;color:#7d7b73">CERTIFICATIONS</h2>
+<p style="margin:0;font-size:12px;line-height:1.6;color:#7d7b73">None listed on your CV yet. Send the names, issuers and dates and they appear as badges here.</p>
+</div>
+</section>
+
+<section id="contact" style="scroll-margin-top:84px;display:flex;flex-wrap:wrap;gap:24px;align-items:stretch">
+<div style="flex:1 1 340px;background:#1e2716;border:2px solid #1e2716;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<h2 style="margin:0;font-family:'Press Start 2P',monospace;font-size:18px;line-height:1.4;color:#c2cf9b">CONTINUE?</h2>
+<p style="margin:0;font-size:14px;line-height:1.65;color:#93a273">Direct lines, no forms needed.</p>
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+<a href="mailto:abdullahrafique10@gmail.com" style="font-size:14px;color:#c2cf9b;border-bottom-color:rgba(194,207,155,.4)">abdullahrafique10@gmail.com</a>
+<button type="button" onClick="{{ copyEmail }}" style="padding:6px 10px;border:2px solid #4f5d3c;border-radius:2px;background:none;color:#93a273;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;cursor:pointer;transition:transform .18s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-2px)">{{ copyEmailLabel }}</button>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+<a href="tel:+4917687625321" style="font-size:14px;color:#c2cf9b;border-bottom-color:rgba(194,207,155,.4)">+49 176 876 25321</a>
+<button type="button" onClick="{{ copyPhone }}" style="padding:6px 10px;border:2px solid #4f5d3c;border-radius:2px;background:none;color:#93a273;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1;cursor:pointer;transition:transform .18s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-2px)">{{ copyPhoneLabel }}</button>
+</div>
+<a href="https://www.linkedin.com/in/abdullahrafique07/" target="_blank" rel="noopener" style="font-size:14px;color:#c2cf9b;border-bottom-color:rgba(194,207,155,.4)">linkedin.com/in/abdullahrafique07</a>
+</div>
+</div>
+
+<div style="flex:1 1 420px;background:linear-gradient(#dedcd3,#c9c7be);border:2px solid #7d7b73;border-radius:8px;padding:20px;box-shadow:0 4px 0 rgba(30,39,22,.18);display:flex;flex-direction:column;gap:12px">
+
+<div style="display:flex;align-items:center;justify-content:space-between">
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;color:#7d7b73">BONUS&nbsp;STAGE</span>
+<span style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;color:#7d7b73">HI {{ snakeBest }}</span>
+</div>
+
+<div style="position:relative;background:#c2cf9b;border:3px solid #2b2b28;border-radius:2px;padding:12px;display:flex;flex-direction:column;gap:8px">
+<div style="position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(30,39,22,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(30,39,22,.13) 1px,transparent 1px);background-size:3px 3px;opacity:{{ matrixOpacity }};z-index:6"></div>
+
+<div style="display:flex;justify-content:space-between;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;color:#1e2716">
+<span>SNAKE</span>
+<span>{{ snakeScoreLine }}</span>
+</div>
+
+<div style="position:relative;width:100%;aspect-ratio:1;max-width:288px;margin:0 auto">
+<div style="display:grid;grid-template-columns:repeat(16,1fr);grid-auto-rows:1fr;gap:1px;width:100%;height:100%">
+<sc-for list="{{ snakeCells }}" as="cell" hint-placeholder-count="256">
+<div style="border-radius:1px;background:{{ cell.bg }}"></div>
+</sc-for>
+</div>
+<sc-if value="{{ snakeOverlay.show }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;inset:0;z-index:7;background:rgba(194,207,155,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;text-align:center;animation:clearIn .26s cubic-bezier(.2,.8,.25,1) both">
+<p style="margin:0;font-family:'Press Start 2P',monospace;font-size:14px;line-height:1.5;color:{{ snakeOverlay.color }}">{{ snakeOverlay.title }}</p>
+<p style="margin:0;font-size:12px;line-height:1.6;color:#39452b;max-width:26ch">{{ snakeOverlay.note }}</p>
+<button type="button" onClick="{{ snakeGo }}" style="padding:14px 18px;min-height:44px;background:#1e2716;color:#c2cf9b;border:none;border-radius:8px;box-shadow:0 3px 0 #7d7b73;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.3;cursor:pointer;transition:transform .18s cubic-bezier(.2,.8,.25,1),box-shadow .18s cubic-bezier(.2,.8,.25,1)" style-hover="transform:translateY(-2px);box-shadow:0 5px 0 #7d7b73">{{ snakeOverlay.label }}</button>
+</div>
+</sc-if>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+<div style="display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px);gap:4px">
+<span></span>
+<button type="button" onClick="{{ snakeUp }}" style="border:2px solid #7d7b73;border-radius:4px;background:#d5d3ca;color:#1e2716;font-family:'Press Start 2P',monospace;font-size:12px;line-height:1;cursor:pointer;transition:transform .12s cubic-bezier(.2,.8,.25,1)" style-active="transform:translateY(2px)">&#9650;</button>
+<span></span>
+<button type="button" onClick="{{ snakeLeft }}" style="border:2px solid #7d7b73;border-radius:4px;background:#d5d3ca;color:#1e2716;font-family:'Press Start 2P',monospace;font-size:12px;line-height:1;cursor:pointer;transition:transform .12s cubic-bezier(.2,.8,.25,1)" style-active="transform:translateY(2px)">&#9668;</button>
+<span></span>
+<button type="button" onClick="{{ snakeRight }}" style="border:2px solid #7d7b73;border-radius:4px;background:#d5d3ca;color:#1e2716;font-family:'Press Start 2P',monospace;font-size:12px;line-height:1;cursor:pointer;transition:transform .12s cubic-bezier(.2,.8,.25,1)" style-active="transform:translateY(2px)">&#9658;</button>
+<span></span>
+<button type="button" onClick="{{ snakeDown }}" style="border:2px solid #7d7b73;border-radius:4px;background:#d5d3ca;color:#1e2716;font-family:'Press Start 2P',monospace;font-size:12px;line-height:1;cursor:pointer;transition:transform .12s cubic-bezier(.2,.8,.25,1)" style-active="transform:translateY(2px)">&#9660;</button>
+<span></span>
+</div>
+<div style="flex:1 1 160px;display:flex;flex-direction:column;align-items:flex-start;gap:10px">
+<p style="margin:0;font-size:12px;line-height:1.6;color:#4f5d3c">Arrow keys or the D-pad. Walls and your own tail end the run. Beat {{ snakeBest }} and email me the number.</p>
+<button type="button" onClick="{{ snakeGo }}" style="align-self:flex-end;padding:12px 16px;min-height:44px;border:2px solid #4f5d3c;border-radius:4px;background:#1e2716;color:#c2cf9b;font-family:'Press Start 2P',monospace;font-size:9px;line-height:1;cursor:pointer;transition:transform .12s cubic-bezier(.2,.8,.25,1)" style-active="transform:translateY(2px)">{{ snakeBtn }}</button>
+</div>
+</div>
+
+</div>
+</section>
+
+<footer style="border-top:2px solid #7d7b73;padding-top:20px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.5;color:#7d7b73">
+<span>ABDULLAH RAFIQUE · MUNICH, DE</span>
+<span>{{ footerNote }}</span>
+</footer>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;dotMatrix&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Career run&quot;},&quot;typewriterIntro&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Intro&quot;},&quot;typeSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:6,&quot;max&quot;:60,&quot;step&quot;:2,&quot;default&quot;:18,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Intro&quot;},&quot;snakeSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:140,&quot;max&quot;:320,&quot;step&quot;:10,&quot;default&quot;:220,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Snake&quot;}}">
+const RUN_SPEED = 132;
+const GRAVITY = 900;
+const JUMP_V = 470;
+const COYOTE = 150;
+const LIP = 9;
+const STORE_KEY = "ar-career-run-v1";
+
+const LEVELS = [
+  { name: "LV.1 BREMEN", kind: "EDUCATION", target: 6, len: 1560,
+    title: "BSc Industrial Engineering & Management",
+    org: "Constructor University, Bremen · 09/2021 - 06/2024",
+    bullets: ["Major in Industrial Engineering and Management.",
+              "Thesis on social media analytics for consumer perception of sustainability regulation."],
+    link: null,
+    pits: [[540, 584], [1010, 1054]],
+    coins: [[190, 14], [300, 62], [410, 14], [700, 62], [800, 14], [900, 62], [1150, 14], [1250, 62], [1350, 14], [1450, 62]] },
+
+  { name: "LV.2 ML PROJECT", kind: "PROJECT", target: 6, len: 1700,
+    title: "Predictive Maintenance Model",
+    org: "Machine learning · Constructor University Bremen",
+    bullets: ["Predicted asset failures: 25% higher accuracy, 15% lower maintenance cost.",
+              "Power BI dashboard with DAX measures to visualise predictions.",
+              "NLP on maintenance logs to raise model accuracy."],
+    link: "projects",
+    pits: [[480, 524], [900, 944], [1330, 1374]],
+    coins: [[200, 62], [330, 14], [440, 62], [660, 14], [770, 62], [1050, 14], [1160, 62], [1260, 14], [1480, 62], [1580, 14]] },
+
+  { name: "LV.3 ALLIANZ IDS", kind: "INTERNSHIP", target: 7, len: 1880,
+    title: "Project Management Intern",
+    org: "Allianz Germany (IDS), Munich · 08/2023 - 07/2024",
+    bullets: ["Excel models for financial analysis, budgeting and forecasting.",
+              "KPI analysis and reporting; Jira, Confluence and MS Project tracking.",
+              "SAP budgeting, SQL data extracts, ESG due diligence rollout."],
+    link: "experience",
+    pits: [[520, 564], [940, 984], [1400, 1444]],
+    coins: [[170, 14], [280, 62], [390, 14], [700, 62], [810, 14], [880, 62], [1110, 14], [1220, 62], [1320, 14], [1580, 62], [1700, 14]] },
+
+  { name: "LV.4 FORVIA", kind: "TRAINEE", target: 7, len: 1980,
+    title: "Global Program Purchasing Trainee",
+    org: "Forvia, Munich · 02/2025 - 09/2025",
+    bullets: ["Validated and analysed regional purchasing data for sourcing strategy.",
+              "Power BI dashboards on purchasing KPIs and performance trends.",
+              "Supplier Nomination Committee and Sourcing Strategy Review processes."],
+    link: "experience",
+    pits: [[500, 544], [910, 954], [1330, 1374], [1700, 1744]],
+    coins: [[180, 62], [300, 14], [410, 62], [680, 14], [790, 62], [1080, 14], [1190, 62], [1260, 14], [1500, 62], [1620, 14], [1880, 62]] },
+
+  { name: "LV.5 ALLIANZ SE", kind: "CURRENT ROLE", target: 8, len: 2160,
+    title: "Digital Transformation · Reporting & Analysis",
+    org: "Allianz SE Group Compliance, Munich · 11/2025 - present",
+    bullets: ["Python automation for MI reporting data collection and cleaning.",
+              "Regulatory reports: Annual, Interim, SFCR, RSR; QA across 58+ entities.",
+              "KPIs and KRIs, Power BI dashboards, PMO support for global initiatives."],
+    link: "experience",
+    pits: [[480, 524], [880, 924], [1290, 1334], [1660, 1704]],
+    coins: [[170, 14], [280, 62], [390, 14], [660, 62], [770, 14], [1050, 62], [1160, 14], [1230, 62], [1460, 14], [1570, 62], [1840, 14], [1960, 62]] }
+];
+
+const INTRO = "Digital Transformation Analyst working in Allianz Group Compliance: automation, scripting, deployment of dashboards, and product owner.";
+
+const ROLE_NAMES = { a: "Allianz SE", b: "Forvia", c: "Allianz IDS", p: "ML project" };
+
+const SKILLS = [
+  { title: "CODE", items: [
+    { name: "Python", r: ["a", "p"] }, { name: "SQL / PL-SQL", r: ["c"] },
+    { name: "C", r: [] }, { name: "C++", r: [] },
+    { name: "JavaScript", r: [] }, { name: "HTML", r: [] }, { name: "CSS", r: [] }
+  ]},
+  { title: "DATA & PLATFORMS", items: [
+    { name: "Power BI + DAX", r: ["a", "b", "p"] }, { name: "Excel", r: ["a", "c"] },
+    { name: "SAP HANA", r: ["c"] }, { name: "GenAI", r: ["a"] },
+    { name: "Tableau", r: [] }, { name: "MS Access", r: [] },
+    { name: "SharePoint", r: [] }, { name: "JMP", r: [] }
+  ]},
+  { title: "METHODS", items: [
+    { name: "KPI analysis", r: ["a", "b", "c"] }, { name: "Regulatory reporting", r: ["a"] },
+    { name: "Jira / Confluence", r: ["c"] }, { name: "MS Project", r: ["c"] },
+    { name: "ESG due diligence", r: ["c"] }, { name: "NLP", r: ["p"] },
+    { name: "Scrum", r: [] }, { name: "Kanban", r: [] },
+    { name: "Business process design", r: [] }, { name: "Lean management", r: [] },
+    { name: "Supply chain optimisation", r: [] }, { name: "Process ownership", r: [] }
+  ]}
+];
+
+const SECTIONS = ["experience", "skills", "projects", "contact"];
+
+const SN_COLS = 16;
+const SN_ROWS = 16;
+const SN_KEY = "ar-snake-best-v1";
+const SN_EMPTY = "rgba(30,39,22,.07)";
+
+class Component extends DCLogic {
+  state = {
+    lv: 0, phase: "ready", reason: "", score: 0, got: {}, unlocked: 1, cleared: {},
+    typed: 0, dl: "idle", dlPct: 0,
+    sn: { body: [{ x: 5, y: 8 }, { x: 4, y: 8 }, { x: 3, y: 8 }], food: { x: 11, y: 8 }, score: 0, phase: "ready", best: 0 },
+    open: { a: true, b: true, c: true },
+    filter: null, activeSec: "", scrollPct: 0, copied: ""
+  };
+
+  g = { x: 20, y: 0, vy: 0, ground: true, last: 0 };
+
+  node(kind) {
+    const cache = this.nodes || (this.nodes = {});
+    if (!cache[kind] || !cache[kind].isConnected) cache[kind] = document.querySelector('[data-game="' + kind + '"]');
+    return cache[kind];
+  }
+
+  componentDidMount() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
+      if (saved && saved.unlocked) this.setState({ unlocked: saved.unlocked, cleared: saved.cleared || {} });
+    } catch (err) { /* no saved run */ }
+
+    try {
+      const b = parseInt(localStorage.getItem(SN_KEY) || "0", 10);
+      if (b > 0) this.setState((s) => ({ sn: Object.assign({}, s.sn, { best: b }) }));
+    } catch (err) { /* storage unavailable */ }
+
+    this.snDir = { x: 1, y: 0 };
+    this.snQueue = [];
+
+    this.keyDown = (e) => {
+      const t = e.target, tag = t && t.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || (t && t.isContentEditable)) return;
+      const snakeLive = this.state.sn.phase === "run";
+      const arrows = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] };
+      if (snakeLive && arrows[e.key]) { this.snakeTurn(arrows[e.key][0], arrows[e.key][1]); e.preventDefault(); return; }
+      if (e.key === " " || e.key === "ArrowUp" || e.key === "w") { this.jump(); e.preventDefault(); }
+      else if (e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight") { /* idle snake keys */ }
+      else if (e.key === "r") { this.startLevel(this.state.lv); }
+    };
+    window.addEventListener("keydown", this.keyDown);
+
+    this.onScroll = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const pct = max > 0 ? Math.min(100, Math.round((h.scrollTop / max) * 100)) : 0;
+      let active = "";
+      SECTIONS.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 140) active = id;
+      });
+      this.setState((s) => (s.scrollPct === pct && s.activeSec === active ? null : { scrollPct: pct, activeSec: active }));
+    };
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+    this.onScroll();
+
+    this.g.last = performance.now();
+    this.raf = requestAnimationFrame(this.tick);
+
+    if (this.props.typewriterIntro === false) { this.setState({ typed: INTRO.length }); return; }
+    const speed = this.props.typeSpeed || 18;
+    this.timer = setInterval(() => {
+      this.setState((s) => {
+        if (s.typed >= INTRO.length) { clearInterval(this.timer); return null; }
+        return { typed: s.typed + 1 };
+      });
+    }, speed);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.keyDown);
+    window.removeEventListener("scroll", this.onScroll);
+    cancelAnimationFrame(this.raf);
+    clearInterval(this.timer);
+    clearInterval(this.dlTimer);
+    clearInterval(this.snTimer);
+    clearTimeout(this.copyTimer);
+  }
+
+  save(unlocked, cleared) {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify({ unlocked: unlocked, cleared: cleared })); }
+    catch (err) { /* storage unavailable */ }
+  }
+
+  startLevel(n) {
+    if (n > this.state.unlocked - 1) return;
+    this.g.x = 20; this.g.y = 0; this.g.vy = 0; this.g.ground = true; this.g.falling = false; this.g.coyote = 0; this.g.last = performance.now();
+    this.setState({ lv: n, phase: "run", score: 0, got: {} });
+  }
+
+  jump() {
+    const ph = this.state.phase;
+    if (ph === "clear" || ph === "fail") { this.startLevel(ph === "clear" ? Math.min(LEVELS.length - 1, this.state.lv + 1) : this.state.lv); return; }
+    if (ph === "ready") { this.startLevel(this.state.lv); return; }
+    if (ph !== "run") return;
+    if (this.g.ground) { this.g.vy = JUMP_V; this.g.ground = false; }
+  }
+
+  onGap(x) {
+    const pits = LEVELS[this.state.lv].pits;
+    for (let i = 0; i < pits.length; i++) {
+      if (x + 7 > pits[i][0] && x + 7 < pits[i][1] - LIP) return true;
+    }
+    return false;
+  }
+
+  finish(win, reason) {
+    const s = this.state;
+    if (win) {
+      const cleared = Object.assign({}, s.cleared, { [s.lv]: s.score });
+      const unlocked = Math.max(s.unlocked, Math.min(LEVELS.length, s.lv + 2));
+      this.save(unlocked, cleared);
+      this.setState({ phase: "clear", cleared: cleared, unlocked: unlocked });
+    } else {
+      this.setState({ phase: "fail", reason: reason || "short" });
+    }
+  }
+
+  tick = (now) => {
+    this.raf = requestAnimationFrame(this.tick);
+    const g = this.g;
+    const dt = Math.min(0.05, (now - g.last) / 1000) || 0;
+    g.last = now;
+
+    const level = LEVELS[this.state.lv];
+    const running = this.state.phase === "run";
+
+    if (running) {
+      g.x += RUN_SPEED * dt;
+      const overGap = this.onGap(g.x);
+      if (overGap && g.y <= -8) g.falling = true;
+      if (!g.ground || g.vy !== 0 || overGap || g.falling) {
+        const wasGround = g.ground;
+        g.vy -= GRAVITY * dt;
+        g.y += g.vy * dt;
+        if (g.y <= 0 && !overGap && !g.falling) { g.y = 0; g.vy = 0; g.ground = true; }
+        else {
+          if (wasGround && g.vy < 0) g.coyote = now;
+          g.ground = false;
+        }
+      }
+
+      const cx = g.x + 7, cy = g.y + 9;
+      for (let i = 0; i < level.coins.length; i++) {
+        if (this.state.got[i]) continue;
+        const c = level.coins[i];
+        if (Math.abs(cx - (c[0] + 6)) < 17 && cy > c[1] + 6 - 24) {
+          this.setState((st) => ({ got: Object.assign({}, st.got, { [i]: true }), score: st.score + 1 }));
+          break;
+        }
+      }
+
+      if (g.y < -90) { this.finish(false, "pit"); }
+      else if (g.x >= level.len - 30) { this.finish(this.state.score >= level.target, "short"); }
+    }
+
+    const view = this.node("view");
+    const vw = view && view.clientWidth ? view.clientWidth : 400;
+    const cam = Math.max(0, Math.min(level.len + 60 - vw, g.x - vw / 2 + 7));
+    const world = this.node("world"), sky = this.node("sky"), sprite = this.node("sprite"), legs = this.node("legs"), bar = this.node("progress");
+    if (world) world.style.transform = "translateX(" + (-cam) + "px)";
+    if (sky) sky.style.transform = "translateX(" + (-cam * 0.35) + "px)";
+    if (sprite) sprite.style.transform = "translate(" + g.x + "px," + (-g.y) + "px)";
+    if (legs) {
+      const want = running && g.ground ? "running" : "paused";
+      if (legs.style.animationPlayState !== want) legs.style.animationPlayState = want;
+    }
+    if (bar) bar.style.width = Math.max(0, Math.min(100, (g.x / level.len) * 100)) + "%";
+  };
+
+  copy(kind, text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => this.flagCopy(kind), () => this.flagCopy(kind + "-fail"));
+    } else { this.flagCopy(kind + "-fail"); }
+  }
+
+  flagCopy(v) {
+    this.setState({ copied: v });
+    clearTimeout(this.copyTimer);
+    this.copyTimer = setTimeout(() => this.setState({ copied: "" }), 1800);
+  }
+
+  scrollTo(id) {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 90, behavior: "smooth" });
+  }
+
+  download() {
+    if (this.state.dl === "loading") return;
+    this.setState({ dl: "loading", dlPct: 0 });
+    clearInterval(this.dlTimer);
+    this.dlTimer = setInterval(() => {
+      this.setState((s) => {
+        const next = s.dlPct + 1;
+        if (next >= 6) {
+          clearInterval(this.dlTimer);
+          const a = document.createElement("a");
+          a.href = "Abdullah-Rafique-CV.pdf";
+          a.download = "Abdullah-Rafique-CV.pdf";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => this.setState({ dl: "idle", dlPct: 0 }), 2200);
+          return { dlPct: 6, dl: "done" };
+        }
+        return { dlPct: next };
+      });
+    }, 130);
+  }
+
+  snakeFood(body) {
+    const taken = {};
+    body.forEach((p) => { taken[p.y * SN_COLS + p.x] = 1; });
+    const free = [];
+    for (let i = 0; i < SN_COLS * SN_ROWS; i++) if (!taken[i]) free.push(i);
+    const pick = free[Math.floor(Math.random() * free.length)] || 0;
+    return { x: pick % SN_COLS, y: Math.floor(pick / SN_COLS) };
+  }
+
+  snakeStart() {
+    const cy = Math.floor(SN_ROWS / 2);
+    const body = [{ x: 5, y: cy }, { x: 4, y: cy }, { x: 3, y: cy }];
+    this.snDir = { x: 1, y: 0 };
+    this.snQueue = [];
+    clearInterval(this.snTimer);
+    this.snTimer = setInterval(() => this.snakeStep(), this.snakeMs(0));
+    this.snMs = this.snakeMs(0);
+    this.setState((s) => ({ sn: { body: body, food: this.snakeFood(body), score: 0, phase: "run", best: s.sn.best } }));
+  }
+
+  snakeMs(score) {
+    const base = this.props.snakeSpeed || 220;
+    return Math.max(90, base - score * 7);
+  }
+
+  snakeStep() {
+    this.setState((s) => {
+      const sn = s.sn;
+      if (sn.phase !== "run") return null;
+      if (this.snQueue.length) {
+        const nd = this.snQueue.shift();
+        if (nd.x !== -this.snDir.x || nd.y !== -this.snDir.y) this.snDir = nd;
+      }
+      const head = { x: sn.body[0].x + this.snDir.x, y: sn.body[0].y + this.snDir.y };
+      if (head.x < 0 || head.y < 0 || head.x >= SN_COLS || head.y >= SN_ROWS) return this.snakeOver(sn);
+      if (sn.body.some((p, i) => i < sn.body.length - 1 && p.x === head.x && p.y === head.y)) return this.snakeOver(sn);
+
+      const ate = head.x === sn.food.x && head.y === sn.food.y;
+      const body = [head].concat(ate ? sn.body : sn.body.slice(0, -1));
+      const score = sn.score + (ate ? 1 : 0);
+      if (ate) {
+        const ms = this.snakeMs(score);
+        if (ms !== this.snMs) {
+          this.snMs = ms;
+          clearInterval(this.snTimer);
+          this.snTimer = setInterval(() => this.snakeStep(), ms);
+        }
+      }
+      return { sn: { body: body, food: ate ? this.snakeFood(body) : sn.food, score: score, phase: "run", best: Math.max(sn.best, score) } };
+    });
+  }
+
+  snakeOver(sn) {
+    clearInterval(this.snTimer);
+    const best = Math.max(sn.best, sn.score);
+    try { localStorage.setItem(SN_KEY, String(best)); } catch (err) { /* storage unavailable */ }
+    return { sn: { body: sn.body, food: sn.food, score: sn.score, phase: "over", best: best } };
+  }
+
+  snakeTurn(x, y) {
+    if (this.state.sn.phase !== "run") return;
+    if (this.snQueue.length < 2) this.snQueue.push({ x: x, y: y });
+  }
+
+  card(key, filter) {
+    const s = this.state;
+    const dim = filter && filter.r.indexOf(key) === -1;
+    return {
+      op: dim ? 0.32 : 1,
+      open: key === "p" ? true : !!s.open[key],
+      caret: s.open[key] ? "▾" : "▸",
+      toggle: () => this.setState((st) => ({ open: Object.assign({}, st.open, { [key]: !st.open[key] }) }))
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const L = LEVELS[s.lv];
+
+    const snBody = {};
+    s.sn.body.forEach((p, i) => { snBody[p.y * SN_COLS + p.x] = i === 0 ? 2 : 1; });
+    const snFood = s.sn.food.y * SN_COLS + s.sn.food.x;
+    const snakeCells = [];
+    for (let i = 0; i < SN_COLS * SN_ROWS; i++) {
+      snakeCells.push({ bg: snBody[i] === 2 ? "#1e2716" : snBody[i] === 1 ? "#4f5d3c" : i === snFood ? "#9e3b2a" : SN_EMPTY });
+    }
+    const f = s.filter;
+    const allOpen = s.open.a && s.open.b && s.open.c;
+    const nCleared = Object.keys(s.cleared).length;
+    const last = s.lv === LEVELS.length - 1;
+
+    const navFor = (id) => ({
+      color: s.activeSec === id ? "#1e2716" : "#4f5d3c",
+      line: s.activeSec === id ? "#9e3b2a" : "transparent"
+    });
+
+    const segs = [];
+    let cur = 0;
+    L.pits.forEach((p) => { segs.push([cur, p[0] - cur]); cur = p[1]; });
+    segs.push([cur, L.len + 60 - cur]);
+
+    let overlay;
+    if (s.phase === "clear") {
+      overlay = {
+        show: true, head: "LEVEL CLEAR", sub: s.score + "/" + L.coins.length + " PTS",
+        title: L.title, org: L.org,
+        bullets: L.bullets.map((t) => ({ t: t })),
+        primaryLabel: last ? "REPLAY LEVEL 5" : "NEXT LEVEL",
+        primaryGo: last ? () => this.startLevel(s.lv) : () => this.startLevel(s.lv + 1),
+        hasSecondary: !!L.link,
+        secondaryLabel: "READ FULL ENTRY",
+        secondaryGo: () => this.scrollTo(L.link || "experience")
+      };
+    } else if (s.phase === "fail") {
+      const pit = s.reason === "pit";
+      overlay = {
+        show: true, head: pit ? "MISSED THE JUMP" : "NOT ENOUGH PTS",
+        sub: pit ? "PTS " + s.score : s.score + " / " + L.target + " NEEDED",
+        title: pit ? "He fell into a gap" : "Collect " + L.target + " pickups to clear this level",
+        org: pit ? "Jump the dotted gaps to keep running." : "You reached the END flag with " + s.score + ".",
+        bullets: [{ t: "Press A, space, or tap the screen to jump." }, { t: "Coins sit at two heights: low ones are free, high ones need a jump." }],
+        primaryLabel: "RETRY LEVEL", primaryGo: () => this.startLevel(s.lv),
+        hasSecondary: false, secondaryLabel: "", secondaryGo: () => {}
+      };
+    } else if (s.phase === "ready") {
+      overlay = {
+        show: true, head: L.name, sub: "TARGET " + L.target + " PTS",
+        title: L.kind + " · " + (s.cleared[s.lv] !== undefined ? "CLEARED WITH " + s.cleared[s.lv] : "NOT CLEARED YET"),
+        org: "He runs on his own. You only jump.",
+        bullets: [{ t: "Collect " + L.target + "+ pickups before the END flag." }, { t: "Clear it and this level's CV entry opens up." }],
+        primaryLabel: "START LEVEL", primaryGo: () => this.startLevel(s.lv),
+        hasSecondary: false, secondaryLabel: "", secondaryGo: () => {}
+      };
+    } else {
+      overlay = { show: false, head: "", sub: "", title: "", org: "", bullets: [], primaryLabel: "", primaryGo: () => {}, hasSecondary: false, secondaryLabel: "", secondaryGo: () => {} };
+    }
+
+    return {
+      intro: INTRO.slice(0, s.typed),
+      worldW: (L.len + 120) + "px",
+      ground: segs.map((sg) => ({ x: sg[0] + "px", w: Math.max(0, sg[1]) + "px" })),
+      pits: L.pits.map((p) => ({ x: p[0] + "px", w: (p[1] - p[0]) + "px" })),
+      flagX: (L.len - 20) + "px",
+      flagLabelX: (L.len - 16) + "px",
+      coins: L.coins.map((c, n) => ({
+        x: c[0] + "px", y: (29 + c[1]) + "px",
+        bg: s.got[n] ? "transparent" : "#4f5d3c",
+        border: s.got[n] ? "rgba(30,39,22,.22)" : "#1e2716",
+        delay: (n % 4) * 0.2 + "s"
+      })),
+      levelName: L.name,
+      levelCounter: "LEVEL " + (s.lv + 1) + " / " + LEVELS.length,
+      scoreLine: "PTS " + s.score + "/" + L.target,
+      matrixOpacity: this.props.dotMatrix === false ? 0 : 1,
+      overlay: overlay,
+
+      clearedCount: nCleared + "/" + LEVELS.length,
+      levelList: LEVELS.map((lv, n) => {
+        const locked = n > s.unlocked - 1;
+        const done = s.cleared[n] !== undefined;
+        return {
+          name: lv.name + " · " + lv.kind,
+          status: locked ? "LOCKED" : done ? "CLEAR " + s.cleared[n] : n === s.lv ? "SELECTED" : "OPEN",
+          bg: n === s.lv ? "#c2cf9b" : locked ? "rgba(30,39,22,.04)" : "#d5d3ca",
+          border: n === s.lv ? "#4f5d3c" : "#8f8d85",
+          fg: locked ? "#8f8d85" : "#1e2716",
+          statusFg: locked ? "#8f8d85" : done ? "#4f5d3c" : "#9e3b2a",
+          cursor: locked ? "not-allowed" : "pointer",
+          pick: locked ? () => {} : () => this.setState({ lv: n, phase: "ready", score: 0, got: {} })
+        };
+      }),
+      levelChips: LEVELS.map((lv, n) => {
+        const locked = n > s.unlocked - 1;
+        return {
+          n: String(n + 1),
+          aria: locked ? "Level " + (n + 1) + " locked" : "Play level " + (n + 1),
+          bg: n === s.lv ? "#1e2716" : locked ? "rgba(30,39,22,.06)" : "#d5d3ca",
+          fg: n === s.lv ? "#c2cf9b" : locked ? "#8f8d85" : "#1e2716",
+          border: locked ? "#b3b1a8" : "#4f5d3c",
+          cursor: locked ? "not-allowed" : "pointer",
+          pick: locked ? () => {} : () => this.setState({ lv: n, phase: "ready", score: 0, got: {} })
+        };
+      }),
+      stopEvt: (e) => { if (e && e.stopPropagation) e.stopPropagation(); },
+      pressJump: (e) => { if (e && e.preventDefault) e.preventDefault(); this.jump(); },
+      onRetry: () => this.startLevel(s.lv),
+
+      onDownload: () => this.download(),
+      dlLabel: s.dl === "loading" ? "READING CART" : s.dl === "done" ? "CV SAVED" : "DOWNLOAD CV",
+      dlCells: [0, 1, 2, 3, 4, 5].map((n) => ({ fill: n < s.dlPct ? "#c2cf9b" : "rgba(194,207,155,.28)" })),
+
+      nav: { experience: navFor("experience"), skills: navFor("skills"), projects: navFor("projects"), contact: navFor("contact") },
+      scrollPct: s.scrollPct + "%",
+
+      filterActive: !!f,
+      filterBox: f
+        ? { text: "FILTER: " + f.name + "  >  " + f.r.map((k) => ROLE_NAMES[k]).join(" · "), bg: "#c2cf9b", border: "#4f5d3c", fg: "#1e2716" }
+        : { text: "NO FILTER · SHOWING ALL ROLES", bg: "transparent", border: "#8f8d85", fg: "#7d7b73" },
+      onClearFilter: () => this.setState({ filter: null }),
+      onJumpToRoles: () => this.scrollTo("experience"),
+      onToggleAll: () => this.setState({ open: { a: !allOpen, b: !allOpen, c: !allOpen } }),
+      toggleAllLabel: allOpen ? "COLLAPSE ALL" : "EXPAND ALL",
+
+      roleA: this.card("a", f), roleB: this.card("b", f), roleC: this.card("c", f), roleP: this.card("p", f),
+
+      skillGroups: SKILLS.map((g) => ({
+        title: g.title,
+        items: g.items.map((it) => {
+          const on = f && f.name === it.name;
+          const live = it.r.length > 0;
+          return {
+            name: it.name,
+            count: live ? String(it.r.length) : "",
+            countFg: on ? "#c2cf9b" : "#4f5d3c",
+            bg: on ? "#1e2716" : "rgba(30,39,22,.1)",
+            border: on ? "#1e2716" : "transparent",
+            fg: on ? "#c2cf9b" : live ? "#1e2716" : "#4f5d3c",
+            cursor: live ? "pointer" : "default",
+            click: live ? () => this.setState((x) => ({ filter: x.filter && x.filter.name === it.name ? null : { name: it.name, r: it.r } })) : () => {}
+          };
+        })
+      })),
+
+      copyEmail: () => this.copy("email", "abdullahrafique10@gmail.com"),
+      copyPhone: () => this.copy("phone", "+4917687625321"),
+      copyEmailLabel: s.copied === "email" ? "COPIED" : s.copied === "email-fail" ? "COPY BLOCKED" : "COPY",
+      copyPhoneLabel: s.copied === "phone" ? "COPIED" : s.copied === "phone-fail" ? "COPY BLOCKED" : "COPY",
+
+      snakeCells: snakeCells,
+      snakeScoreLine: "PTS " + s.sn.score,
+      snakeBest: s.sn.best,
+      snakeBtn: s.sn.phase === "run" ? "RESET" : "START",
+      snakeOverlay: {
+        show: s.sn.phase !== "run",
+        color: s.sn.phase === "over" ? "#9e3b2a" : "#1e2716",
+        title: s.sn.phase === "over" ? "GAME OVER" : "SNAKE",
+        note: s.sn.phase === "over"
+          ? "Scored " + s.sn.score + ". Best " + s.sn.best + "."
+          : "Eat the crimson block. Walls and your own tail end it.",
+        label: s.sn.phase === "over" ? "PLAY AGAIN" : "START"
+      },
+      snakeGo: () => this.snakeStart(),
+      snakeUp: () => this.snakeTurn(0, -1),
+      snakeDown: () => this.snakeTurn(0, 1),
+      snakeLeft: () => this.snakeTurn(-1, 0),
+      snakeRight: () => this.snakeTurn(1, 0),
+      footerNote: "CV UPDATED 08/2026"
+    };
+  }
+}
+</script>
+</body>
+</html>
